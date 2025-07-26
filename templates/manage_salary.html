@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Salary - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+        <i class="fas fa-dollar-sign mr-3 text-secondary"></i>Manage Salary for {{ employee.name }}
+    </h1>
+    <form method="POST" class="bg-white shadow-lg rounded-lg p-6 space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2">Month</label>
+            <select name="month" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                {% for m in range(1, 13) %}
+                <option value="{{ m }}" {% if m == current_month %}selected{% endif %}>{{ m }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2">Year</label>
+            <input type="number" name="year" required min="2000" max="2100" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="{{ current_year }}">
+        </div>
+    </div>
+    <div>
+        <label class="block text-gray-700 font-semibold mb-2">Fixed Pay</label>
+        <input type="number" step="0.01" name="fixed_pay" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+    </div>
+    <div>
+        <label class="block text-gray-700 font-semibold mb-2">Variable Pay</label>
+        <input type="number" step="0.01" name="variable_pay" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+    </div>
+    <div>
+        <label class="block text-gray-700 font-semibold mb-2">Deductions</label>
+        <input type="number" step="0.01" name="deductions" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+    </div>
+    <div class="flex justify-end space-x-4 mt-6">
+        <a href="{{ url_for('view_employees') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium transition-colors">Cancel</a>
+        <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 font-medium transition-colors">Save</button>
+    </div>
+</form>
+
+{% if salary_records %}
+<div class="mt-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4"><i class="fas fa-list-alt mr-2 text-secondary"></i>Monthly Salary Records</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto bg-white rounded-lg shadow divide-y divide-gray-200">
+            <thead>
+                <tr class="bg-gray-50">
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Month</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fixed Pay</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variable Pay</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Special Allowances</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deductions</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid On</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for record in salary_records %}
+                <tr>
+                    <td class="px-4 py-2">{{ record.month }}</td>
+                    <td class="px-4 py-2">{{ record.year }}</td>
+                    <td class="px-4 py-2">{{ record.fixed_pay }}</td>
+                    <td class="px-4 py-2">{{ record.variable_pay }}</td>
+                    <td class="px-4 py-2">{{ record.special_allowances }}</td>
+                    <td class="px-4 py-2">{{ record.deductions }}</td>
+                    <td class="px-4 py-2">{{ record.total }}</td>
+                    <td class="px-4 py-2">{{ record.paid_on.strftime('%Y-%m-%d') if record.paid_on else '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="text-gray-500 mt-8">No salary records found for this employee.</div>
+{% endif %}
+</div>
+{% endblock %}

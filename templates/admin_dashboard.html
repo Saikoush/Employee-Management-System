@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+            <i class="fas fa-tachometer-alt mr-3 text-primary"></i>
+            Admin Dashboard
+        </h1>
+        <p class="mt-2 text-gray-600">Welcome back, {{ session.name }}! Here's your system overview.</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-primary">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-primary text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Total Employees
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            {{ total_employees }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-secondary">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-secondary text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Today's Attendance
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            {{ today_attendance }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-accent">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-percentage text-accent text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Attendance Rate
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            {% if total_employees > 0 %}
+                                {{ "%.1f"|format((today_attendance / total_employees) * 100) }}%
+                            {% else %}
+                                0%
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-purple-500">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calendar-day text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Today's Date
+                        </div>
+                        <div class="text-lg font-bold text-gray-900" id="current-date">
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">
+            <i class="fas fa-bolt mr-2 text-accent"></i>
+            Quick Actions
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{{ url_for('register_employee') }}" 
+               class="flex items-center p-4 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+                <i class="fas fa-user-plus text-2xl mr-4"></i>
+                <div>
+                    <div class="font-semibold">Add New Employee</div>
+                    <div class="text-sm opacity-90">Register a new team member</div>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('view_employees') }}" 
+               class="flex items-center p-4 bg-secondary text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
+                <i class="fas fa-users text-2xl mr-4"></i>
+                <div>
+                    <div class="font-semibold">Manage Employees</div>
+                    <div class="text-sm opacity-90">View and edit employee details</div>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('view_employees') }}" 
+               class="flex items-center p-4 bg-accent text-white rounded-lg hover:bg-yellow-600 transition-colors shadow-md">
+                <i class="fas fa-chart-bar text-2xl mr-4"></i>
+                <div>
+                    <div class="font-semibold">View Reports</div>
+                    <div class="text-sm opacity-90">Attendance and performance data</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">
+            <i class="fas fa-history mr-2 text-gray-600"></i>
+            System Overview
+        </h2>
+        <div class="text-gray-600">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-3">System Features</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-secondary mr-2"></i>
+                            Employee Registration & Management
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-secondary mr-2"></i>
+                            Attendance Tracking (Check-in/out)
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-secondary mr-2"></i>
+                            Salary Management
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-secondary mr-2"></i>
+                            Performance Monitoring
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-3">Quick Stats</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Total System Users:</span>
+                            <span class="font-semibold">{{ total_employees + 1 }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Active Employees:</span>
+                            <span class="font-semibold">{{ total_employees }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Present Today:</span>
+                            <span class="font-semibold">{{ today_attendance }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add current date display
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const dateElement = document.getElementById('current-date');
+        if (dateElement) {
+            dateElement.textContent = today.toLocaleDateString('en-US', options);
+        }
+    });
+</script>
+{% endblock %}

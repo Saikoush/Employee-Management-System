@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance History - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+        <i class="fas fa-history mr-3 text-primary"></i>Attendance History
+    </h1>
+    {% if attendance_logs %}
+    <table class="min-w-full table-auto mb-4">
+        <thead>
+            <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check In</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check Out</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for record in attendance_logs %}
+            <tr>
+                <td class="px-4 py-2">{{ record.date }}</td>
+                <td class="px-4 py-2">{{ record.check_in_time if record.check_in_time else '-' }}</td>
+                <td class="px-4 py-2">{{ record.check_out_time if record.check_out_time else '-' }}</td>
+                <td class="px-4 py-2">{{ record.hours_worked if record.hours_worked else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="text-gray-500">No attendance records found.</div>
+    {% endif %}
+</div>
+{% endblock %}

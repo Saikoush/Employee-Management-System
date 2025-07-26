@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-primary rounded-full flex items-center justify-center shadow-lg">
+                <i class="fas fa-building text-white text-2xl"></i>
+            </div>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Employee Management System
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Sign in to your account
+            </p>
+        </div>
+        
+        <div class="bg-white py-8 px-6 shadow-xl rounded-lg border">
+            <form class="space-y-6" method="POST">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-2"></i>Email Address
+                    </label>
+                    <input id="email" name="email" type="email" required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 transition-colors"
+                           placeholder="Enter your email">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2"></i>Password
+                    </label>
+                    <input id="password" name="password" type="password" required
+                           class="appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 transition-colors"
+                           placeholder="Enter your password">
+                </div>
+
+                <div>
+                    <button type="submit"
+                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-sign-in-alt text-blue-300 group-hover:text-blue-200"></i>
+                        </span>
+                        Sign In
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-6 border-t pt-6">
+                <div class="text-sm text-gray-600">
+                    <p class="font-medium mb-2">Demo Credentials:</p>
+                    <div class="bg-gray-50 p-3 rounded-md">
+                        <p><strong>Admin:</strong> admin@company.com / admin123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

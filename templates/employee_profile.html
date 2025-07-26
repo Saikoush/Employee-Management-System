@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Profile - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+                <i class="fas fa-user mr-3 text-primary"></i>
+                {{ employee.name }}
+            </h1>
+            <p class="mt-2 text-gray-600">{{ employee.email }} | {{ employee.position }} | {{ employee.department }}</p>
+        </div>
+        <a href="{{ url_for('view_employees') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium transition-colors shadow-md">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Employees
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Attendance Section -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-calendar-check mr-2 text-accent"></i>Attendance Logs
+            </h2>
+            {% if attendance_logs %}
+            <table class="min-w-full table-auto mb-4">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check In</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check Out</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for record in attendance_logs %}
+                    <tr>
+                        <td class="px-4 py-2">{{ record.date }}</td>
+                        <td class="px-4 py-2">{{ record.check_in_time if record.check_in_time else '-' }}</td>
+                        <td class="px-4 py-2">{{ record.check_out_time if record.check_out_time else '-' }}</td>
+                        <td class="px-4 py-2">{{ record.hours_worked if record.hours_worked else '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="text-gray-500">No attendance records found.</div>
+            {% endif %}
+        </div>
+        <!-- Salary Section -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-dollar-sign mr-2 text-secondary"></i>Salary Details
+            </h2>
+            {% if salary_records %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto bg-white rounded-lg shadow divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Month</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fixed Pay</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variable Pay</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deductions</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid On</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for record in salary_records %}
+                        <tr>
+                            <td class="px-4 py-2">{{ record.month }}</td>
+                            <td class="px-4 py-2">{{ record.year }}</td>
+                            <td class="px-4 py-2">{{ record.fixed_pay }}</td>
+                            <td class="px-4 py-2">{{ record.variable_pay }}</td>
+                            <td class="px-4 py-2">{{ record.deductions }}</td>
+                            <td class="px-4 py-2">{{ record.total }}</td>
+                            <td class="px-4 py-2">{{ record.paid_on.strftime('%Y-%m-%d') if record.paid_on else '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-gray-500">No salary records found.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
